@@ -1,0 +1,434 @@
+Sources: https://www.tutorialspoint.com/ruby/
+https://www.ruby-lang.org/en/documentation/quickstart/
+https://www.youtube.com/watch?v=Dji9ALCgfpM
+
+Background: Ruby is a scripting language designed by Yukihiro Matsumoto, also
+known as Matz. Dynamic, Interpreted, OO Language, where everything is an object,
+that can all be overwritten.
+
+Interactive Shell:
+irb -> This opens the interactive shell for ruby
+
+
+Basic Commands and Syntax:
+# -> single line comment
+print "string" -> prints to the terminal string
+variables start with a lowercase or an underscore
+  ex)first_num = 32
+gets.to_i -> gets user input and converts it to an integer
+  ex)a_num = gets.to_i
+puts -> also prints to screen but adds a new line after the string where print will not
+string_one + string_two -> concats string
+.rb -> the extenstion for all ruby files
+ruby's ints are larger than normal ints
+floats have 14 digits like normal
+
+Everything is an Object
+ex) puts 1.class -> Fixnum
+    puts 1.234.class -> Float
+    puts "a string".class -> String
+
+Constant
+Starts with an uppercase letter
+ex) A_CONSTANT = 3.1
+You can change a constant, it will throw a warning but nothing else
+
+Creating File Object
+ex) write_handler = File.new("out.txt", "w")
+    write_handler.puts("Text Text").to_s
+    write_handler.close
+    data_file = File.read("out.text")
+    puts data_file -> Text Text
+
+Loading a rb file
+ex) load "example.rb" -> will execute the code just like python
+
+Multiline Comment
+ex) =begin
+    Here is my comments
+    Here too
+    =end
+
+Conditionals
+ex) if (age >= 5) && (age <= 6)
+      puts "You are a kid"
+    elsif (age >= 7)
+      puts "You are in middle school"
+    else
+      puts "i dunno"
+    end
+Comparison: == != < > <= >=
+Logical: && || ! and or not
+Boolean: true, false
+Special: l <=> r -> 0 if l and r are equal
+                    1 if l is greater than r
+                    -1 if l is less than r
+| get.chomp removes the newline after the user hits enter
+
+Case
+ex) case variable
+      when condition
+        code
+        exit
+      when condition2
+        code
+        exit
+      else
+        code
+    end
+
+Ternary Operator
+ex) (condition) ? "The answer if true" : "The answer if false"
+
+Looping
+ex) x = 1
+    loop do
+      x +=1
+      next unless (x%2)==0 //next is like continue in other languages
+      puts x
+      break if x >= 10
+    end
+
+While Loop
+ex) y = 1
+    while y <= 10
+      puts y
+      y+=1
+    end
+
+Until Loop
+ex) y = 1
+    until y <= 10
+      puts y
+      y+=1
+    end
+
+For Loops
+Way 1: Use an Array
+ex) numbers = [1,2,3,4,5]
+    for num in numbers
+      puts num
+    end
+  ->1
+  ->2
+  ->3
+  ->4
+  ->5
+Way 2: Other way to use an array
+ex) numbers = [1,2,3,4,5]
+    numbers.each do |num|
+      puts num
+    end
+  ->1
+  ->2
+  ->3
+  ->4
+  ->5
+Way 3: Range
+ex) (0..5).each do |i|
+      puts i
+
+Functions
+ex) def add_num(num_1, num_2)
+      return num_1.to_i+num_2.to_i
+    end
+
+    puts add_num(3, 4) -> 7
+Ruby passes by value!!!
+
+Exception Handling
+ex) print "Enter a number : "
+    first_num = gets.to_i
+    print "Enter Another : "
+    second_num = gets.to_i
+    begin // Starts the try/catch block
+      answer = first_num/second_num
+    rescue // The catch to the catch block
+      puts "uh oh"
+      exit
+    end
+Throwing custom exceptions using raise
+ex) def check_age(age)
+      raise ArgumentError, "Enter Positive Number" unless age > 0
+    end
+Then catch specifically those errors
+begin
+  check_age(-1)
+rescue ArgumentError
+  put "thats not an age..."
+end
+
+Strings
+String interpolation doesn't work with '' and neither do backslash
+characters like newline
+
+Here Doc
+A here-doc is normally used when you want a multiline string
+ex) multiline_string = <<EOM
+    This is a very long string
+    that contains interpolation
+    like #{4 + 5} \n\n
+    EOM
+.methods gives you all the methods of a class
+
+String Interpolation
+ex) first_name = "Derek"
+    last_name = "Banas"
+    middle_name = "Justin"
+    full_name = "#{first_name} #{middle_name} #{last_name}"
+
+.include
+Tests to see if a string includes something
+ex) puts test_str.include?("test")
+
+.size
+string.size returns the size of the string
+
+.equal?()
+tests to see if they are the exact same object
+
+.upcase .downcase .swapcase
+
+A lot of string methods: http://www.newthinktank.com/2015/02/ruby-programming-tutorial/
+
+
+
+OOP
+ex) class Animal
+      def initialize
+        puts "creating a New Animal"
+      end
+      def vocalize
+        return "Animal Sound"
+      end
+
+      def set_name(new_name)
+        @name = new_name //@ makes it an instance variable
+      end
+      def get_name
+        @name
+      end
+
+      //Quick way to make a getter and a setter
+      attr_accessor :name, :height, :weight //creates all the instance variables with Getters and Setters automatically
+  end
+
+cat = Animal.new // instantiating an Animal
+cat.name = "Kitty"
+
+Inheritance
+class Cat < Animal
+  def vocalize //Overwrite
+    return "Meow"
+  end
+end
+
+
+
+Modules
+- made of methods and variables, but cannot be instantiated
+- Used to get around multiple inheritance
+- - A class can only inherent from one class, but can inherit from multiple modules
+ex) //human.rb
+    module Human
+      attr_accessor :name, :height, :weight
+      def run
+        puts self.name + "runs"
+      end
+    end
+    //smart.rb
+    module Smart
+      def act_smart
+        return "I am smart"
+      end
+    end
+    //main.rb
+    require_relative "human"
+    require_relative "smart"
+    module Animal //modules should be in seperate files
+      def make_sound
+        puts "GRRR"
+      end
+    end
+    class Dog
+      include Animal //Here is where the module is added in
+    end
+    class Scientist
+      include Human
+      prepend Smart //if two modules or even this class have the same named method, prepend gets preference
+    end
+
+
+
+Polymorphism
+-a little weird because of duck-typing
+ex) class Bird
+      def tweet(bird_type)
+        bird_type.tweet
+      end
+    end
+
+    class Cardinal < Bird
+      def tweet
+        puts "Tweet tweet"
+      end
+    end
+
+    class Parrot < Bird
+      def tweet
+        puts "Squawk"
+      end
+    end
+
+
+
+Symbols
+- Symbols are strings that can't be changed
+- - use them to conserve memory and to speed string comparison
+- Use if: The string value won't change and the string does not need access to the string methods
+ex)
+  :derek
+  puts :derek //prints derek
+
+
+
+Array
+ex) arr = Array.new
+    arr1 = Array.new(5) //Array of 5 nils
+    arr2 = Array.new(5, "empty")
+    arr3 = [1, "two", 3, 5.5]
+
+    puts arr3[0] //prints 1
+    puts array_4[2,2].join(", ") //Return 2 values starting at the 2nd index
+
+    puts array_4.values_at(0,1,3).join(", ") //Return values in index 0, 1 and 3
+
+
+    array_4.unshift(0) // Add 0 at the beginning of the array
+    puts array_4.join(", ")
+
+    array_4.shift() //Remove the first item in the array
+    puts array_4.join(", ")
+
+    array_4.push(100, 200) //Add 100 and 200 to the end of the array
+    puts array_4.join(", ")
+
+    array_4.pop //Remove item at the end of the array
+    puts array_4.join(", ")
+
+    array_4.concat([10,20,30]) //Add one array to the end of another
+    puts array_4.join(", ")
+
+    // Array Methods
+    puts "Array Size : " + array_4.size().to_s
+    puts "Array Contains 100 : " + array_4.include?(100).to_s
+    puts "How Many 100s : " + array_4.count(100).to_s
+    puts "Array Empty : " + array_4.empty?.to_s
+
+    puts array_4.join(", ") //Convert an array into a string
+
+    p array_4 //Print and Inspect the array
+
+    array_4.each do |value| //Output array in loop
+      puts value
+    end
+
+Hashes
+  # A hash is a collection of key object pairs
+
+  number_hash = { "PI" => 3.14,
+                  "Golden" => 1.618,
+                  "e" => 2.718}
+
+  puts number_hash["PI"]
+
+  superheroes = Hash["Clark Kent", "Superman", "Bruce Wayne", "Batman"]
+
+  puts superheroes["Clark Kent"]
+
+  # Add to a hash
+  superheroes["Barry Allen"] = "Flash"
+  puts superheroes["Barry Allen"]
+
+  # Set a default key value
+  samp_hash = Hash.new("No Such Key")
+  puts samp_hash["Dog"]
+
+  superheroines = Hash["Lisa Morel", "Aquagirl", "Betty Kane", "Batgirl"]
+
+  # Combine 2 hashes in a destructive way with update or with no overwriting
+  # with merge
+
+  superheroes.update(superheroines)
+
+  # Print out each key and value
+
+  superheroes.each do |key, value|
+    puts key.to_s + ' : ' + value
+  end
+
+  puts "Has Key Lisa Morel : " + superheroes.has_key?("Lisa Morel").to_s
+  puts "Has Value Batman : " + superheroes.has_value?("Batman").to_s
+  puts "Is Hash Empty : " + superheroes.empty?.to_s
+  puts "Size of Hash : " + superheroes.size.to_s
+
+  # Delete a key value
+
+  superheroes.delete("Barry Allen")
+
+puts "Size of Hash : " + superheroes.size.to_s
+
+
+
+Enumerable
+  class Menu
+    include Enumerable
+
+    # Each provides items one at a time
+
+    def each
+      yield "pizza"
+      yield "spaghetti"
+      yield "salad"
+      yield "bread"
+      yield "water"
+    end
+  end
+
+  menu_options = Menu.new
+
+  # We can cycle through all the options
+
+  menu_options.each do |item|
+    puts "Would you like : #{item}"
+  end
+
+  # Check to see if we have pizza
+  p menu_options.find {|item| item == "pizza"}
+
+  # Return items 5 letters in length
+  p menu_options.select {|item| item.size <= 5}
+
+  # Reject items that meet the criteria
+  p menu_options.reject {|item| item.size <= 5}
+
+  # Return the first item
+  p menu_options.first
+
+  # Return the first 2
+  p menu_options.take(2)
+
+  # Return the everything except the first 2
+  p menu_options.drop(2)
+
+  # Return the minimum item
+  p menu_options.min
+
+  # Return the maximum item
+  p menu_options.max
+
+  # Sort the items
+  p menu_options.sort
+
+  # Return each item in reverse order
+  menu_options.reverse_each {|item| puts item}
